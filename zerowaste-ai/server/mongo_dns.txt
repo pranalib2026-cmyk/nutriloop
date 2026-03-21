@@ -1,0 +1,2 @@
+SRV=ac-6vd3qta-shard-00-01.al063ec.mongodb.net,ac-6vd3qta-shard-00-00.al063ec.mongodb.net,ac-6vd3qta-shard-00-02.al063ec.mongodb.net
+TXT=authSource=admin&replicaSet=atlas-al55y8-shard-0

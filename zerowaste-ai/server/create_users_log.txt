@@ -1,0 +1,324 @@
+Γ£à Firebase Admin initialized
+C:\Users\Asus\OneDrive\Desktop\Nutriloop\zerowaste-ai\server\node_modules\mongoose\lib\connection.js:1168
+    err = new ServerSelectionError();
+          ^
+
+MongooseServerSelectionError: Could not connect to any servers in your MongoDB Atlas cluster. One common reason is that you're trying to access the database from an IP that isn't whitelisted. Make sure your current IP address is on your Atlas cluster's IP whitelist: https://www.mongodb.com/docs/atlas/security-whitelist/
+    at _handleConnectionErrors (C:\Users\Asus\OneDrive\Desktop\Nutriloop\zerowaste-ai\server\node_modules\mongoose\lib\connection.js:1168:11)
+    at NativeConnection.openUri (C:\Users\Asus\OneDrive\Desktop\Nutriloop\zerowaste-ai\server\node_modules\mongoose\lib\connection.js:1099:11)
+    at async file:///C:/Users/Asus/OneDrive/Desktop/Nutriloop/zerowaste-ai/server/scripts/createDemoUsers.js:6:1 {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'ReplicaSetNoPrimary',
+    servers: Map(3) {
+      'ac-6vd3qta-shard-00-00.al063ec.mongodb.net:27017' => ServerDescription {
+        address: 'ac-6vd3qta-shard-00-00.al063ec.mongodb.net:27017',
+        type: 'Unknown',
+        hosts: [],
+        passives: [],
+        arbiters: [],
+        tags: {},
+        minWireVersion: 0,
+        maxWireVersion: 0,
+        roundTripTime: -1,
+        minRoundTripTime: 0,
+        lastUpdateTime: 31617,
+        lastWriteDate: 0,
+        error: MongoNetworkError: 70700000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:openssl\ssl\record\rec_layer_s3.c:918:SSL alert number 80
+        
+            at TLSSocket.<anonymous> (C:\Users\Asus\OneDrive\Desktop\Nutriloop\zerowaste-ai\server\node_modules\mongodb\lib\cmap\connect.js:297:44)
+            at Object.onceWrapper (node:events:623:26)
+            at TLSSocket.emit (node:events:508:28)
+            at emitErrorNT (node:internal/streams/destroy:170:8)
+            at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+            at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+          errorLabelSet: Set(3) {
+            'SystemOverloadedError',
+            'RetryableError',
+            'ResetPool'
+          },
+          beforeHandshake: false,
+          [cause]: [Error: 70700000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:openssl\ssl\record\rec_layer_s3.c:918:SSL alert number 80
+          ] {
+            library: 'SSL routines',
+            reason: 'tlsv1 alert internal error',
+            code: 'ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR'
+          }
+        },
+        topologyVersion: null,
+        setName: null,
+        setVersion: null,
+        electionId: null,
+        logicalSessionTimeoutMinutes: null,
+        maxMessageSizeBytes: null,
+        maxWriteBatchSize: null,
+        maxBsonObjectSize: null,
+        primary: null,
+        me: null,
+        '$clusterTime': null,
+        iscryptd: false
+      },
+      'ac-6vd3qta-shard-00-01.al063ec.mongodb.net:27017' => ServerDescription {
+        address: 'ac-6vd3qta-shard-00-01.al063ec.mongodb.net:27017',
+        type: 'Unknown',
+        hosts: [],
+        passives: [],
+        arbiters: [],
+        tags: {},
+        minWireVersion: 0,
+        maxWireVersion: 0,
+        roundTripTime: -1,
+        minRoundTripTime: 0,
+        lastUpdateTime: 31508,
+        lastWriteDate: 0,
+        error: MongoNetworkError: 70700000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:openssl\ssl\record\rec_layer_s3.c:918:SSL alert number 80
+        
+            at TLSSocket.<anonymous> (C:\Users\Asus\OneDrive\Desktop\Nutriloop\zerowaste-ai\server\node_modules\mongodb\lib\cmap\connect.js:297:44)
+            at Object.onceWrapper (node:events:623:26)
+            at TLSSocket.emit (node:events:508:28)
+            at emitErrorNT (node:internal/streams/destroy:170:8)
+            at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+            at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+          errorLabelSet: Set(3) {
+            'SystemOverloadedError',
+            'RetryableError',
+            'ResetPool'
+          },
+          beforeHandshake: false,
+          [cause]: [Error: 70700000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:openssl\ssl\record\rec_layer_s3.c:918:SSL alert number 80
+          ] {
+            library: 'SSL routines',
+            reason: 'tlsv1 alert internal error',
+            code: 'ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR'
+          }
+        },
+        topologyVersion: null,
+        setName: null,
+        setVersion: null,
+        electionId: null,
+        logicalSessionTimeoutMinutes: null,
+        maxMessageSizeBytes: null,
+        maxWriteBatchSize: null,
+        maxBsonObjectSize: null,
+        primary: null,
+        me: null,
+        '$clusterTime': null,
+        iscryptd: false
+      },
+      'ac-6vd3qta-shard-00-02.al063ec.mongodb.net:27017' => ServerDescription {
+        address: 'ac-6vd3qta-shard-00-02.al063ec.mongodb.net:27017',
+        type: 'Unknown',
+        hosts: [],
+        passives: [],
+        arbiters: [],
+        tags: {},
+        minWireVersion: 0,
+        maxWireVersion: 0,
+        roundTripTime: -1,
+        minRoundTripTime: 0,
+        lastUpdateTime: 31313,
+        lastWriteDate: 0,
+        error: MongoNetworkError: 70700000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:openssl\ssl\record\rec_layer_s3.c:918:SSL alert number 80
+        
+            at TLSSocket.<anonymous> (C:\Users\Asus\OneDrive\Desktop\Nutriloop\zerowaste-ai\server\node_modules\mongodb\lib\cmap\connect.js:297:44)
+            at Object.onceWrapper (node:events:623:26)
+            at TLSSocket.emit (node:events:508:28)
+            at emitErrorNT (node:internal/streams/destroy:170:8)
+            at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+            at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+          errorLabelSet: Set(3) {
+            'SystemOverloadedError',
+            'RetryableError',
+            'ResetPool'
+          },
+          beforeHandshake: false,
+          [cause]: [Error: 70700000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:openssl\ssl\record\rec_layer_s3.c:918:SSL alert number 80
+          ] {
+            library: 'SSL routines',
+            reason: 'tlsv1 alert internal error',
+            code: 'ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR'
+          }
+        },
+        topologyVersion: null,
+        setName: null,
+        setVersion: null,
+        electionId: null,
+        logicalSessionTimeoutMinutes: null,
+        maxMessageSizeBytes: null,
+        maxWriteBatchSize: null,
+        maxBsonObjectSize: null,
+        primary: null,
+        me: null,
+        '$clusterTime': null,
+        iscryptd: false
+      }
+    },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: 'atlas-al55y8-shard-0',
+    maxElectionId: null,
+    maxSetVersion: null,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  },
+  code: undefined,
+  cause: TopologyDescription {
+    type: 'ReplicaSetNoPrimary',
+    servers: Map(3) {
+      'ac-6vd3qta-shard-00-00.al063ec.mongodb.net:27017' => ServerDescription {
+        address: 'ac-6vd3qta-shard-00-00.al063ec.mongodb.net:27017',
+        type: 'Unknown',
+        hosts: [],
+        passives: [],
+        arbiters: [],
+        tags: {},
+        minWireVersion: 0,
+        maxWireVersion: 0,
+        roundTripTime: -1,
+        minRoundTripTime: 0,
+        lastUpdateTime: 31617,
+        lastWriteDate: 0,
+        error: MongoNetworkError: 70700000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:openssl\ssl\record\rec_layer_s3.c:918:SSL alert number 80
+        
+            at TLSSocket.<anonymous> (C:\Users\Asus\OneDrive\Desktop\Nutriloop\zerowaste-ai\server\node_modules\mongodb\lib\cmap\connect.js:297:44)
+            at Object.onceWrapper (node:events:623:26)
+            at TLSSocket.emit (node:events:508:28)
+            at emitErrorNT (node:internal/streams/destroy:170:8)
+            at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+            at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+          errorLabelSet: Set(3) {
+            'SystemOverloadedError',
+            'RetryableError',
+            'ResetPool'
+          },
+          beforeHandshake: false,
+          [cause]: [Error: 70700000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:openssl\ssl\record\rec_layer_s3.c:918:SSL alert number 80
+          ] {
+            library: 'SSL routines',
+            reason: 'tlsv1 alert internal error',
+            code: 'ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR'
+          }
+        },
+        topologyVersion: null,
+        setName: null,
+        setVersion: null,
+        electionId: null,
+        logicalSessionTimeoutMinutes: null,
+        maxMessageSizeBytes: null,
+        maxWriteBatchSize: null,
+        maxBsonObjectSize: null,
+        primary: null,
+        me: null,
+        '$clusterTime': null,
+        iscryptd: false
+      },
+      'ac-6vd3qta-shard-00-01.al063ec.mongodb.net:27017' => ServerDescription {
+        address: 'ac-6vd3qta-shard-00-01.al063ec.mongodb.net:27017',
+        type: 'Unknown',
+        hosts: [],
+        passives: [],
+        arbiters: [],
+        tags: {},
+        minWireVersion: 0,
+        maxWireVersion: 0,
+        roundTripTime: -1,
+        minRoundTripTime: 0,
+        lastUpdateTime: 31508,
+        lastWriteDate: 0,
+        error: MongoNetworkError: 70700000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:openssl\ssl\record\rec_layer_s3.c:918:SSL alert number 80
+        
+            at TLSSocket.<anonymous> (C:\Users\Asus\OneDrive\Desktop\Nutriloop\zerowaste-ai\server\node_modules\mongodb\lib\cmap\connect.js:297:44)
+            at Object.onceWrapper (node:events:623:26)
+            at TLSSocket.emit (node:events:508:28)
+            at emitErrorNT (node:internal/streams/destroy:170:8)
+            at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+            at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+          errorLabelSet: Set(3) {
+            'SystemOverloadedError',
+            'RetryableError',
+            'ResetPool'
+          },
+          beforeHandshake: false,
+          [cause]: [Error: 70700000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:openssl\ssl\record\rec_layer_s3.c:918:SSL alert number 80
+          ] {
+            library: 'SSL routines',
+            reason: 'tlsv1 alert internal error',
+            code: 'ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR'
+          }
+        },
+        topologyVersion: null,
+        setName: null,
+        setVersion: null,
+        electionId: null,
+        logicalSessionTimeoutMinutes: null,
+        maxMessageSizeBytes: null,
+        maxWriteBatchSize: null,
+        maxBsonObjectSize: null,
+        primary: null,
+        me: null,
+        '$clusterTime': null,
+        iscryptd: false
+      },
+      'ac-6vd3qta-shard-00-02.al063ec.mongodb.net:27017' => ServerDescription {
+        address: 'ac-6vd3qta-shard-00-02.al063ec.mongodb.net:27017',
+        type: 'Unknown',
+        hosts: [],
+        passives: [],
+        arbiters: [],
+        tags: {},
+        minWireVersion: 0,
+        maxWireVersion: 0,
+        roundTripTime: -1,
+        minRoundTripTime: 0,
+        lastUpdateTime: 31313,
+        lastWriteDate: 0,
+        error: MongoNetworkError: 70700000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:openssl\ssl\record\rec_layer_s3.c:918:SSL alert number 80
+        
+            at TLSSocket.<anonymous> (C:\Users\Asus\OneDrive\Desktop\Nutriloop\zerowaste-ai\server\node_modules\mongodb\lib\cmap\connect.js:297:44)
+            at Object.onceWrapper (node:events:623:26)
+            at TLSSocket.emit (node:events:508:28)
+            at emitErrorNT (node:internal/streams/destroy:170:8)
+            at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+            at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+          errorLabelSet: Set(3) {
+            'SystemOverloadedError',
+            'RetryableError',
+            'ResetPool'
+          },
+          beforeHandshake: false,
+          [cause]: [Error: 70700000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:openssl\ssl\record\rec_layer_s3.c:918:SSL alert number 80
+          ] {
+            library: 'SSL routines',
+            reason: 'tlsv1 alert internal error',
+            code: 'ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR'
+          }
+        },
+        topologyVersion: null,
+        setName: null,
+        setVersion: null,
+        electionId: null,
+        logicalSessionTimeoutMinutes: null,
+        maxMessageSizeBytes: null,
+        maxWriteBatchSize: null,
+        maxBsonObjectSize: null,
+        primary: null,
+        me: null,
+        '$clusterTime': null,
+        iscryptd: false
+      }
+    },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: 'atlas-al55y8-shard-0',
+    maxElectionId: null,
+    maxSetVersion: null,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  }
+}
+
+Node.js v24.14.0
