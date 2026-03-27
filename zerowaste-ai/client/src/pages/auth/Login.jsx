@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../config/firebase';
-import api from '../../services/api';
+import api, { checkBackendHealth, waitForBackend } from '../../services/api';
 import useAuthStore from '../../store/authStore';
 
 const Login = () => {
@@ -13,39 +13,100 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [statusMsg, setStatusMsg] = useState('');  // friendly status like "Connecting..."
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+    if (e) e.preventDefault();
     setError('');
+    setStatusMsg('');
+    setLoading(true);
 
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      // Wait a moment for Firebase auth state to settle, though API interceptor uses current user
-      const { data } = await api.get('/auth/me');
-      setProfile(data.user);
-
-      // Redirect based on role
-      const role = data.user.role;
-      if (role === 'restaurant') navigate('/restaurant/dashboard');
-      else if (role === 'ngo') navigate('/ngo/feed');
-      else if (role === 'admin') navigate('/admin/dashboard');
-      else navigate('/'); // fallback
-    } catch (err) {
-      console.error(err);
-      if (err.code) {
-        // Firebase error
-        setError(`Firebase Error: ${err.message.replace('Firebase: ', '')}`);
-      } else if (err.response) {
-        // Backend API error
-        setError(`Backend Error: ${err.response.data?.message || err.response.data?.error || 'Server error'}`);
-      } else {
-        // Network or other error
-        setError(`Error: ${err.message}`);
-      }
-    } finally {
+    // 1. Check internet
+    if (!navigator.onLine) {
+      setError('No internet connection. Please check your network and try again.');
       setLoading(false);
+      return;
     }
+
+    // 2. Ensure backend is reachable (wait up to ~10s)
+    setStatusMsg('Connecting to server...');
+    const backendUp = await waitForBackend(5, 2000);
+    if (!backendUp) {
+      setError('Unable to reach the server. Please make sure the app is started with "npm run dev" from the project root.');
+      setStatusMsg('');
+      setLoading(false);
+      return;
+    }
+
+    // 3. Firebase sign-in with retry
+    setStatusMsg('Signing in...');
+    const MAX_RETRIES = 3;
+    let lastError = null;
+
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+        // 4. Fetch profile from backend
+        setStatusMsg('Loading your profile...');
+        try {
+          const { data } = await api.get('/auth/me');
+          setProfile(data.user);
+
+          // 5. Redirect by role
+          const role = data.user.role;
+          if (role === 'restaurant')    navigate('/restaurant/dashboard');
+          else if (role === 'ngo')      navigate('/ngo/feed');
+          else if (role === 'admin')    navigate('/admin/dashboard');
+          else                          navigate('/dashboard');
+
+          setLoading(false);
+          return;
+
+        } catch (backendErr) {
+          const status = backendErr.response?.status;
+          if (status === 401) {
+            setError('Your account exists but is not registered in the system. Please sign up first.');
+          } else if (status === 404) {
+            setError('Profile not found. Please create a new account.');
+          } else {
+            setError('Could not load your profile. Please try again in a moment.');
+          }
+          setStatusMsg('');
+          setLoading(false);
+          return;
+        }
+
+      } catch (err) {
+        lastError = err;
+        const code = err.code || '';
+
+        // Only retry network errors
+        if (code === 'auth/network-request-failed' && attempt < MAX_RETRIES) {
+          setStatusMsg(`Connection issue, retrying... (${attempt}/${MAX_RETRIES})`);
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+          continue;
+        }
+        break;
+      }
+    }
+
+    // Final error handling — all retries exhausted
+    setLoading(false);
+    setStatusMsg('');
+    const code = lastError?.code || '';
+
+    const errorMessages = {
+      'auth/network-request-failed': 'Network error — please check your internet connection and try again.',
+      'auth/user-not-found': 'No account found with this email. Please sign up first.',
+      'auth/wrong-password': 'Incorrect password. Please try again.',
+      'auth/invalid-credential': 'Invalid email or password. Please check your credentials.',
+      'auth/too-many-requests': 'Too many attempts. Please wait a few minutes before trying again.',
+      'auth/user-disabled': 'This account has been disabled. Please contact support.',
+      'auth/invalid-email': 'Please enter a valid email address.',
+    };
+
+    setError(errorMessages[code] || 'Sign in failed. Please check your credentials and try again.');
   };
 
   return (
@@ -135,7 +196,7 @@ const Login = () => {
         justifyContent: 'center',
         padding: '48px 40px',
       }}>
-        <div style={{ width: '100%', maxWidth: '360px' }}>
+        <form onSubmit={handleLogin} style={{ width: '100%', maxWidth: '360px' }} autoComplete="on">
 
           {/* Heading */}
           <div style={{ marginBottom: '32px' }}>
@@ -145,15 +206,44 @@ const Login = () => {
             <div style={{ fontSize: '14px', color: '#6B7280' }}>Sign in to continue to ZeroWaste AI</div>
           </div>
 
+          {/* Status message (Connecting..., Signing in...) */}
+          {statusMsg && !error && (
+            <div style={{
+              background: '#EFF6FF',
+              color: '#1E40AF',
+              borderRadius: '10px',
+              padding: '12px 16px',
+              fontSize: '13px',
+              marginBottom: '16px',
+              border: '1px solid #BFDBFE',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              animation: 'fadeIn 0.2s ease',
+            }}>
+              <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⏳</span>
+              {statusMsg}
+              <style>{`
+                @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+              `}</style>
+            </div>
+          )}
+
           {/* Error message */}
           {error && (
             <div style={{
-              background: '#FEE2E2', color: '#991B1B',
-              borderRadius: '10px', padding: '12px 16px',
-              fontSize: '13px', marginBottom: '16px',
+              background: '#FEE2E2',
+              color: '#991B1B',
+              borderRadius: '10px',
+              padding: '12px 16px',
+              fontSize: '13px',
+              marginBottom: '16px',
               border: '1px solid #FECACA',
+              lineHeight: '1.6',
+              animation: 'fadeIn 0.2s ease',
             }}>
-              {error}
+              ❌ {error}
             </div>
           )}
 
@@ -163,6 +253,9 @@ const Login = () => {
               Email address
             </label>
             <input
+              id="email"
+              name="email"
+              autoComplete="email"
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
@@ -187,6 +280,9 @@ const Login = () => {
               Password
             </label>
             <input
+              id="password"
+              name="password"
+              autoComplete="current-password"
               type="password"
               value={password}
               onChange={e => setPassword(e.target.value)}
@@ -212,23 +308,45 @@ const Login = () => {
             </span>
           </div>
 
+          {/* Offline warning */}
+          {!navigator.onLine && (
+            <div style={{
+              background: '#FEF3C7',
+              border: '1px solid #F59E0B',
+              borderRadius: '10px',
+              padding: '10px 14px',
+              fontSize: '13px',
+              color: '#92400E',
+              marginBottom: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}>
+              ⚠️ You appear to be offline. Check your internet connection.
+            </div>
+          )}
+
           {/* Submit button */}
           <button
-            onClick={handleLogin}
-            disabled={loading}
+            type="submit"
+            disabled={loading || !email || !password}
             style={{
               width: '100%',
-              background: loading ? '#93C5FD' : 'linear-gradient(135deg, #1D4ED8, #2563EB)',
-              color: 'white', border: 'none',
-              borderRadius: '10px', padding: '14px',
-              fontSize: '15px', fontWeight: 700,
-              cursor: loading ? 'not-allowed' : 'pointer',
+              background: (loading || !email || !password)
+                ? '#93C5FD'
+                : 'linear-gradient(135deg, #1D4ED8, #2563EB)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '10px',
+              padding: '14px',
+              fontSize: '15px',
+              fontWeight: 700,
+              cursor: (loading || !email || !password) ? 'not-allowed' : 'pointer',
               boxShadow: loading ? 'none' : '0 4px 16px rgba(37,99,235,0.4)',
               marginBottom: '20px',
               transition: 'all 0.2s',
-            }}
-          >
-            {loading ? 'Signing in...' : 'Sign In →'}
+            }}>
+            {loading ? (statusMsg || '🔄 Signing in...') : 'Sign In →'}
           </button>
 
           {/* Divider */}
@@ -247,7 +365,7 @@ const Login = () => {
             </span>
           </div>
 
-        </div>
+        </form>
       </div>
     </div>
   );
