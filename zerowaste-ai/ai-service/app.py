@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 app = Flask(__name__)
-CORS(app, origins=['http://localhost:5173', 'http://localhost:3001'])
+CORS(app, origins=['http://localhost:5173', 'http://localhost:5000'])
 
 MODEL_PATH = os.getenv('MODEL_PATH', 'model/surplus_model.pkl')
 model = None

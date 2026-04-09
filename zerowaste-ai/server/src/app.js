@@ -12,6 +12,7 @@ import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
 
+app.set('trust proxy', 1);
 app.use(helmet());
 app.use(cors({
   origin:         process.env.FRONTEND_URL || 'http://localhost:5173',
@@ -19,6 +20,7 @@ app.use(cors({
   methods:        ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
   allowedHeaders: ['Content-Type','Authorization'],
 }));
+app.options('*', cors()); // Enable pre-flight for all routes
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));

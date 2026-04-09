@@ -176,55 +176,55 @@ const Signup = () => {
             </div>
           )}
 
-          {/* Input helper */}
-          {[
-            { label: 'Full Name', key: 'name', type: 'text', placeholder: 'Your full name' },
-            ...(role === 'restaurant' ? [{ label: 'Restaurant Name', key: 'orgName', type: 'text', placeholder: 'Spice Garden Restaurant' }] : []),
-            ...(role === 'ngo' ? [{ label: 'Organization Name', key: 'orgName', type: 'text', placeholder: 'Feeding Hope Foundation' }] : []),
-            { label: 'Email address', key: 'email', type: 'email', placeholder: 'you@example.com' },
-            { label: 'Password', key: 'password', type: 'password', placeholder: 'Min 8 characters' },
-          ].map(field => (
-            <div key={field.key} style={{ marginBottom: '14px' }}>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>
-                {field.label}
-              </label>
-              <input
-                type={field.type}
-                placeholder={field.placeholder}
-                value={eval(field.key)}
-                onChange={e => eval(`set${field.key.charAt(0).toUpperCase() + field.key.slice(1)}`)(e.target.value)}
-                style={{
-                  width: '100%', padding: '12px 16px',
-                  border: '1.5px solid #E5E7EB',
-                  borderRadius: '10px', fontSize: '14px',
-                  background: '#FAFAFA', outline: 'none',
-                  boxSizing: 'border-box', color: '#111827',
-                  transition: 'all 0.2s', fontFamily: 'inherit',
-                }}
-                onFocus={e => { e.target.style.borderColor = '#2563EB'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }}
-                onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none'; }}
-              />
+          <form onSubmit={handleSignup} autoComplete="on">
+            <div style={{ marginBottom: '14px' }}>
+              <label htmlFor="name" style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>Full Name</label>
+              <input id="name" name="name" type="text" autoComplete="name" placeholder="Your full name" value={name} onChange={e => setName(e.target.value)} style={{ width: '100%', padding: '12px 16px', border: '1.5px solid #E5E7EB', borderRadius: '10px', fontSize: '14px', background: '#FAFAFA', outline: 'none', boxSizing: 'border-box', color: '#111827', transition: 'all 0.2s', fontFamily: 'inherit' }} onFocus={e => { e.target.style.borderColor = '#2563EB'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }} onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none'; }} />
             </div>
-          ))}
 
-          {/* Submit */}
-          <button
-            onClick={handleSignup}
-            disabled={loading}
-            style={{
-              width: '100%',
-              background: loading ? '#93C5FD' : 'linear-gradient(135deg, #1D4ED8, #2563EB)',
-              color: 'white', border: 'none',
-              borderRadius: '10px', padding: '14px',
-              fontSize: '15px', fontWeight: 700,
-              cursor: loading ? 'not-allowed' : 'pointer',
-              boxShadow: loading ? 'none' : '0 4px 16px rgba(37,99,235,0.4)',
-              marginBottom: '16px', marginTop: '4px',
-              transition: 'all 0.2s',
-            }}
-          >
-            {loading ? 'Creating account...' : 'Create Account →'}
-          </button>
+            {role === 'restaurant' && (
+              <div style={{ marginBottom: '14px' }}>
+                <label htmlFor="orgName" style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>Restaurant Name</label>
+                <input id="orgName" name="orgName" type="text" autoComplete="organization" placeholder="Spice Garden Restaurant" value={orgName} onChange={e => setOrgName(e.target.value)} style={{ width: '100%', padding: '12px 16px', border: '1.5px solid #E5E7EB', borderRadius: '10px', fontSize: '14px', background: '#FAFAFA', outline: 'none', boxSizing: 'border-box', color: '#111827', transition: 'all 0.2s', fontFamily: 'inherit' }} onFocus={e => { e.target.style.borderColor = '#2563EB'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }} onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none'; }} />
+              </div>
+            )}
+
+            {role === 'ngo' && (
+              <div style={{ marginBottom: '14px' }}>
+                <label htmlFor="orgName" style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>Organization Name</label>
+                <input id="orgName" name="orgName" type="text" autoComplete="organization" placeholder="Feeding Hope Foundation" value={orgName} onChange={e => setOrgName(e.target.value)} style={{ width: '100%', padding: '12px 16px', border: '1.5px solid #E5E7EB', borderRadius: '10px', fontSize: '14px', background: '#FAFAFA', outline: 'none', boxSizing: 'border-box', color: '#111827', transition: 'all 0.2s', fontFamily: 'inherit' }} onFocus={e => { e.target.style.borderColor = '#2563EB'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }} onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none'; }} />
+              </div>
+            )}
+
+            <div style={{ marginBottom: '14px' }}>
+              <label htmlFor="email" style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>Email address</label>
+              <input id="email" name="email" type="email" autoComplete="email" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} style={{ width: '100%', padding: '12px 16px', border: '1.5px solid #E5E7EB', borderRadius: '10px', fontSize: '14px', background: '#FAFAFA', outline: 'none', boxSizing: 'border-box', color: '#111827', transition: 'all 0.2s', fontFamily: 'inherit' }} onFocus={e => { e.target.style.borderColor = '#2563EB'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }} onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none'; }} />
+            </div>
+
+            <div style={{ marginBottom: '14px' }}>
+              <label htmlFor="password" style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>Password</label>
+              <input id="password" name="password" type="password" autoComplete="new-password" placeholder="Min 8 characters" value={password} onChange={e => setPassword(e.target.value)} style={{ width: '100%', padding: '12px 16px', border: '1.5px solid #E5E7EB', borderRadius: '10px', fontSize: '14px', background: '#FAFAFA', outline: 'none', boxSizing: 'border-box', color: '#111827', transition: 'all 0.2s', fontFamily: 'inherit' }} onFocus={e => { e.target.style.borderColor = '#2563EB'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }} onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none'; }} />
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                width: '100%',
+                background: loading ? '#93C5FD' : 'linear-gradient(135deg, #1D4ED8, #2563EB)',
+                color: 'white', border: 'none',
+                borderRadius: '10px', padding: '14px',
+                fontSize: '15px', fontWeight: 700,
+                cursor: loading ? 'not-allowed' : 'pointer',
+                boxShadow: loading ? 'none' : '0 4px 16px rgba(37,99,235,0.4)',
+                marginBottom: '16px', marginTop: '4px',
+                transition: 'all 0.2s',
+              }}
+            >
+              {loading ? 'Creating account...' : 'Create Account →'}
+            </button>
+          </form>
 
           <div style={{ textAlign: 'center', fontSize: '14px', color: '#6B7280' }}>
             Already have an account?{' '}

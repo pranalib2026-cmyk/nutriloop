@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "predev": "npx -y kill-port 3001",
-    "dev": "node index.js"
+    "prenode-dev": "npx -y kill-port 5000",
+    "node-dev": "node index.js",
+    "dev": "cd .. && npm run dev"
   },
   "keywords": [],
   "author": "",

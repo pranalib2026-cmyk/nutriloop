@@ -1,8 +1,11 @@
 import axios from 'axios';
 import { auth } from '../config/firebase';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api/v1';
-const HEALTH_URL = API_BASE.replace(/\/api\/v1\/?$/, '') + '/health';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+if (!API_BASE) {
+  console.error("❌ CRITICAL: VITE_API_BASE_URL is missing from environment variables.");
+}
+const HEALTH_URL = (API_BASE || 'http://localhost:5000/api/v1').replace(/\/api\/v1\/?$/, '') + '/health';
 
 const api = axios.create({
   baseURL: API_BASE,
