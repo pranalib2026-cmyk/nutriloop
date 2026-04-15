@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "ZeroWaste AI Root Execution Scripts",
   "scripts": {
-    "predev": "npx -y kill-port 5000 5173 2>nul || true",
-    "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
+
+    "dev": "concurrently --names backend,frontend -c blue,green \"npm run node-dev --prefix server\" \"npm run vite-dev --prefix client\"",
     "start:backend": "npm --prefix server run node-dev",
     "start:frontend": "npm --prefix client run vite-dev",
     "install:all": "npm install && npm --prefix server install && npm --prefix client install",

@@ -10,3 +10,6 @@ build/
 coverage/
 *.log
 firebase-key.json
+
+# Local Netlify folder
+.netlify

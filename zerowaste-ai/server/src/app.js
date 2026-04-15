@@ -1,7 +1,7 @@
-import express   from 'express';
-import cors      from 'cors';
-import morgan    from 'morgan';
-import helmet    from 'helmet';
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
+import helmet from 'helmet';
 import { connectDB } from './config/db.js';
 import authRoutes    from './routes/auth.routes.js';
 import foodRoutes    from './routes/food.routes.js';
@@ -15,32 +15,47 @@ const app = express();
 app.set('trust proxy', 1);
 app.use(helmet());
 app.use(cors({
-  origin:         process.env.FRONTEND_URL || 'http://localhost:5173',
-  credentials:    true,
-  methods:        ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
-  allowedHeaders: ['Content-Type','Authorization'],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (curl, mobile apps, server-to-server)
+    if (!origin) return callback(null, true);
+    // In development, accept any localhost port (5173, 5174, etc.)
+    if (process.env.NODE_ENV !== 'production' && /^http:\/\/localhost:\d+$/.test(origin)) {
+      return callback(null, true);
+    }
+    // In production, check against FRONTEND_URL
+    const allowed = process.env.FRONTEND_URL || 'http://localhost:5173';
+    if (origin === allowed) return callback(null, true);
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
-app.options('*', cors()); // Enable pre-flight for all routes
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
+// Health check — no auth required
 app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: new Date() }));
 
+// API routes
 app.use('/api/v1/auth',     authRoutes);
 app.use('/api/v1/food',     foodRoutes);
 app.use('/api/v1/requests', requestRoutes);
 app.use('/api/v1/match',    matchRoutes);
 app.use('/api/v1/admin',    adminRoutes);
 
-// Log all requests
+// 404 — must call next(err) so errorHandler fires
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.path} - ${res.statusCode}`);
-  next();
+  const err = new Error(`Route not found: ${req.method} ${req.path}`);
+  err.status = 404;
+  next(err);
 });
 
-app.use((req, res) => res.status(404).json({ error: 'Route not found' }));
+// Global error handler — must be last
 app.use(errorHandler);
 
+// Connect DB
 connectDB();
+
 export default app;

@@ -61,7 +61,7 @@ echo  [OK] All dependencies installed
 :: ── 4. Start everything ──
 echo.
 echo  Starting services...
-echo    Backend  → http://localhost:5000
+echo    Backend  -^> http://localhost:5000
 echo    Frontend → http://localhost:5173
 echo.
 echo  Press Ctrl+C to stop all services.
